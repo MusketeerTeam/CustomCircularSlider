@@ -209,8 +209,10 @@
 			break;
 		case UICircularSliderStyleCircle:
 		default:
+            //设置白色描边
 			[self.maximumTrackTintColor setStroke];
 			[self drawCircularTrack:self.maximumValue atPoint:middlePoint withRadius:radius inContext:context];
+            //设置蓝色描边
 			[self.minimumTrackTintColor setStroke];
 			self.thumbCenterPoint = [self drawCircularTrack:self.value atPoint:middlePoint withRadius:radius inContext:context];
 			break;

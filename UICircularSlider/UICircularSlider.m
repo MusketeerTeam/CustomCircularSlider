@@ -65,6 +65,7 @@
 - (void)setMinimumTrackTintColor:(UIColor *)minimumTrackTintColor {
 	if (![minimumTrackTintColor isEqual:_minimumTrackTintColor]) {
 		_minimumTrackTintColor = minimumTrackTintColor;
+        
 		[self setNeedsDisplay];
 	}
 }
@@ -110,15 +111,18 @@
 	[self setup];
 }
 
+
 - (void)setup {
 	self.value = 0.0;
 	self.minimumValue = 0.0;
 	self.maximumValue = 1.0;
-	self.minimumTrackTintColor = [UIColor blueColor];
+    self.minimumTrackTintColor = [UIColor blueColor];
 	self.maximumTrackTintColor = [UIColor whiteColor];
 	self.thumbTintColor = [UIColor darkGrayColor];
 	self.continuous = YES;
 	self.thumbCenterPoint = CGPointZero;
+    self.customAngle = 2*M_PI;
+    self.stepping = -1;
 	
     /**
      * This tapGesture isn't used yet but will allow to jump to a specific location in the circle
@@ -140,6 +144,8 @@
 	radius -= MAX(kLineWidth, kThumbRadius);	
 	return radius;
 }
+
+//绘制滑动按钮
 - (void)drawThumbAtPoint:(CGPoint)sliderButtonCenterPoint inContext:(CGContextRef)context {
 	UIGraphicsPushContext(context);
 	CGContextBeginPath(context);
@@ -157,6 +163,7 @@
 	
 	float angleFromTrack = translateValueFromSourceIntervalToDestinationInterval(track, self.minimumValue, self.maximumValue, 0, self.customAngle);
 	
+    //轨迹的起始角度
 	CGFloat startAngle = -M_PI_2;
 	CGFloat endAngle = startAngle + angleFromTrack;
 	CGContextAddArc(context, center.x, center.y, radius, startAngle, endAngle, NO);
@@ -247,7 +254,15 @@
 				angle = 2*M_PI - angle;
 			}
 			
+            //触摸轨迹
 			self.value = translateValueFromSourceIntervalToDestinationInterval(angle, 0, self.customAngle, self.minimumValue, self.maximumValue);
+            
+            //判断是否设置步长
+            if (self.stepping != -1) {
+                self.value = [self dereferencing:self.value With:self.stepping];
+                NSLog(@"%f",self.value);
+            }
+            
 			break;
 		}
         case UIGestureRecognizerStateEnded:
@@ -265,6 +280,18 @@
 			break;
 	}
 }
+
+
+//步进方法
+- (NSInteger)dereferencing:(NSInteger)importValue With:(NSInteger)intervalValue{
+    NSInteger remainder = fmod(importValue, intervalValue);
+    if (remainder >= (intervalValue/2)) {
+        return (intervalValue - remainder)+importValue;
+    }else{
+        return importValue - remainder;
+    }
+}
+
 - (void)tapGestureHappened:(UITapGestureRecognizer *)tapGestureRecognizer {
 	if (tapGestureRecognizer.state == UIGestureRecognizerStateEnded) {
 		CGPoint tapLocation = [tapGestureRecognizer locationInView:self];

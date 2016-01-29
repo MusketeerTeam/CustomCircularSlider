@@ -34,7 +34,7 @@
 	self.circularSlider.minimumValue = self.slider.minimumValue;
 	self.circularSlider.maximumValue =self.slider.maximumValue;
     self.circularSlider.continuous = NO;
-    self.circularSlider.customAngle = 1.5*M_PI;
+    self.circularSlider.customAngle = 0.8*M_PI;
 }
 
 - (void)viewDidUnload {

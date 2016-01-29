@@ -21,8 +21,8 @@
 @end
 
 @implementation UICircularSliderViewController
-@synthesize slider = _slider;
-@synthesize progressView = _progressView;
+@synthesize slider         = _slider;
+@synthesize progressView   = _progressView;
 @synthesize circularSlider = _circularSlider;
 
 - (void)viewDidLoad {
@@ -31,10 +31,12 @@
     [self.circularSlider addTarget:self action:@selector(sliderTouchedDown:) forControlEvents:UIControlEventTouchDown];
     [self.circularSlider addTarget:self action:@selector(sliderTouchedUpInside:) forControlEvents:UIControlEventTouchUpInside];
     [self.circularSlider addTarget:self action:@selector(sliderTouchedUpOutside:) forControlEvents:UIControlEventTouchUpOutside];
-	self.circularSlider.minimumValue = self.slider.minimumValue;
-	self.circularSlider.maximumValue =self.slider.maximumValue;
-    self.circularSlider.continuous = NO;
-    self.circularSlider.customAngle = 0.8*M_PI;
+
+    self.circularSlider.minimumValue = self.slider.minimumValue;
+    self.circularSlider.maximumValue = self.slider.maximumValue;
+    self.circularSlider.continuous   = NO;
+    self.circularSlider.customAngle  = 2*M_PI;
+//    self.circularSlider.stepping = 1;
 }
 
 - (void)viewDidUnload {

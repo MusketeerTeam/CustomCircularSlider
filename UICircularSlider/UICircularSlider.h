@@ -90,6 +90,11 @@ typedef enum {
  */
 @property (nonatomic) CGFloat customAngle;
 
+/**
+ *  步进值
+ */
+@property (nonatomic) NSInteger stepping;
+
 @end
 
 

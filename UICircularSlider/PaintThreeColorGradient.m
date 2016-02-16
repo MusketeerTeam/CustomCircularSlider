@@ -35,7 +35,7 @@ static UIImage* _imageOfPaintThreeColorGradient = nil;
 }
 
 #pragma mark Colors
-+ (UIColor*)letfMainColor { return _leftMainColor; }
++ (UIColor*)leftMainColor { return _leftMainColor; }
 + (UIColor*)topColor { return _topColor; }
 + (UIColor*)downColor { return _downColor; }
 + (UIColor*)rightMainColor { return _rightMainColor; }
@@ -55,8 +55,7 @@ static UIImage* _imageOfPaintThreeColorGradient = nil;
 
     //// Gradient Declarations
     CGFloat gradientLocations[]  = {0.07, 0.24, 0.52, 0.92};
-    CGGradientRef gradient       = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)@[(id)PaintThreeColorGradient.downColor.CGColor, (id)_leftMainColor.CGColor, (id)PaintThreeColorGradient.letfMainColor.CGColor, (id)PaintThreeColorGradient.topColor.CGColor], gradientLocations);
-//    CGGradientRef gradient       = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)@[(id)PaintThreeColorGradient.downColor.CGColor, (id)[UIColor colorWithRed: 0.669 green: 1 blue: 0 alpha: 1].CGColor, (id)PaintThreeColorGradient.letfMainColor.CGColor, (id)PaintThreeColorGradient.topColor.CGColor], gradientLocations);
+    CGGradientRef gradient       = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)@[(id)PaintThreeColorGradient.downColor.CGColor, (id)_leftMainColor.CGColor, (id)PaintThreeColorGradient.leftMainColor.CGColor, (id)PaintThreeColorGradient.topColor.CGColor], gradientLocations);
     CGFloat gradient2Locations[] = {0.06, 0.18, 0.49, 0.65, 0.93};
     CGGradientRef gradient2      = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)@[(id)PaintThreeColorGradient.downColor.CGColor, (id)_rightMainColor.CGColor, (id)PaintThreeColorGradient.rightMainColor.CGColor, (id)_rightMainColor.CGColor, (id)PaintThreeColorGradient.topColor.CGColor], gradient2Locations);
 

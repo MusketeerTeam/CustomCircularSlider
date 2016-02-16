@@ -18,7 +18,7 @@
 @property(strong, nonatomic) IBOutletCollection(NSObject) NSArray* paintThreeColorGradientTargets;
 
 // Colors
-+ (UIColor*)letfMainColor;
++ (UIColor*)leftMainColor;
 + (UIColor*)topColor;
 + (UIColor*)downColor;
 + (UIColor*)rightMainColor;

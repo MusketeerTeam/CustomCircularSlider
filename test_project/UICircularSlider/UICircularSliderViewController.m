@@ -32,6 +32,7 @@
     [self.circularSlider addTarget:self action:@selector(sliderTouchedDown:) forControlEvents:UIControlEventTouchDown];
     [self.circularSlider addTarget:self action:@selector(sliderTouchedUpInside:) forControlEvents:UIControlEventTouchUpInside];
     [self.circularSlider addTarget:self action:@selector(sliderTouchedUpOutside:) forControlEvents:UIControlEventTouchUpOutside];
+
     self.circularSlider.minimumValue = self.slider.minimumValue;
     self.circularSlider.maximumValue = self.slider.maximumValue;
     self.circularSlider.continuous   = NO;
@@ -39,6 +40,9 @@
 
     //定义步长值
 //    self.circularSlider.stepping = 5;
+
+    self.circularSlider.customAngle  = 2*M_PI;
+//    self.circularSlider.stepping = 1;
 
 }
 

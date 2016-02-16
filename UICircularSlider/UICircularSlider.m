@@ -10,6 +10,7 @@
 //
 
 #import "UICircularSlider.h"
+#import "PaintThreeColorGradient.h"
 
 @interface UICircularSlider()
 
@@ -116,7 +117,15 @@
 	self.value = 0.0;
 	self.minimumValue = 0.0;
 	self.maximumValue = 1.0;
-    self.minimumTrackTintColor = [UIColor blueColor];
+    //将UIimage转换成UIcolor
+//    UIImage *test1= [UICircularSlider ImageWithColor:[PaintThreeColorGradient
+    //自定义渐变颜色
+    [PaintThreeColorGradient setLeftMainColor:[UIColor greenColor]];
+    [PaintThreeColorGradient setRightMainColor:[UIColor redColor]];
+    [PaintThreeColorGradient setTopColor:[UIColor yellowColor]];
+    [PaintThreeColorGradient setDownColor:[UIColor blueColor]];
+    UIColor *test = [UIColor colorWithPatternImage:[PaintThreeColorGradient imageOfPaintThreeColorGradient]];
+    self.minimumTrackTintColor = test;
 	self.maximumTrackTintColor = [UIColor whiteColor];
 	self.thumbTintColor = [UIColor darkGrayColor];
 	self.continuous = YES;
@@ -133,6 +142,21 @@
 	UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureHappened:)];
 	panGestureRecognizer.maximumNumberOfTouches = panGestureRecognizer.minimumNumberOfTouches;
 	[self addGestureRecognizer:panGestureRecognizer];
+}
+
+
++ (UIImage *) ImageWithColor: (UIColor *) color frame:(CGRect)aFrame
+{
+    aFrame = CGRectMake(0, 0, aFrame.size.width, aFrame.size.height);
+    UIGraphicsBeginImageContext(aFrame.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, aFrame);
+    
+    
+    UIImage *theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return theImage;
 }
 
 /** @name Drawing methods */
@@ -163,7 +187,7 @@
 	
 	float angleFromTrack = translateValueFromSourceIntervalToDestinationInterval(track, self.minimumValue, self.maximumValue, 0, self.customAngle);
 	
-    //轨迹的起始角度
+    //轨迹UI的起始角度
 	CGFloat startAngle = -M_PI_2;
 	CGFloat endAngle = startAngle + angleFromTrack;
 	CGContextAddArc(context, center.x, center.y, radius, startAngle, endAngle, NO);
@@ -216,10 +240,10 @@
 			break;
 		case UICircularSliderStyleCircle:
 		default:
-            //设置白色描边
+            //设置底色描边
 			[self.maximumTrackTintColor setStroke];
 			[self drawCircularTrack:self.maximumValue atPoint:middlePoint withRadius:radius inContext:context];
-            //设置蓝色描边
+            //设置填充色描边
 			[self.minimumTrackTintColor setStroke];
 			self.thumbCenterPoint = [self drawCircularTrack:self.value atPoint:middlePoint withRadius:radius inContext:context];
 			break;
@@ -247,6 +271,7 @@
 			CGPoint sliderStartPoint = CGPointMake(sliderCenter.x, sliderCenter.y - radius);
 			CGFloat angle = angleBetweenThreePoints(sliderCenter, sliderStartPoint, tapLocation);
 			
+            //触摸轨迹相关
 			if (angle < 0) {
 				angle = -angle;
 			}
@@ -254,7 +279,6 @@
 				angle = 2*M_PI - angle;
 			}
 			
-            //触摸轨迹
 			self.value = translateValueFromSourceIntervalToDestinationInterval(angle, 0, self.customAngle, self.minimumValue, self.maximumValue);
             
             //判断是否设置步长
@@ -314,6 +338,42 @@
     }
 }
 
+//将十六进制字符串转换成UIColor
+- (UIColor *) colorWithHexString: (NSString *) stringToConvert
+{
+    NSString *cString = [[stringToConvert stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
+    
+    
+    if ([cString length] < 6)
+        return [UIColor whiteColor];
+    if ([cString hasPrefix:@"#"])
+        cString = [cString substringFromIndex:1];
+    if ([cString length] != 6)
+        return [UIColor whiteColor];
+    
+    NSRange range;
+    range.location = 0;
+    range.length = 2;
+    NSString *rString = [cString substringWithRange:range];
+    
+    range.location = 2;
+    NSString *gString = [cString substringWithRange:range];
+    
+    range.location = 4;
+    NSString *bString = [cString substringWithRange:range];
+    
+    
+    unsigned int r, g, b;
+    [[NSScanner scannerWithString:rString] scanHexInt:&r];
+    [[NSScanner scannerWithString:gString] scanHexInt:&g];
+    [[NSScanner scannerWithString:bString] scanHexInt:&b];
+    
+    return [UIColor colorWithRed:((float) r / 255.0f)
+                           green:((float) g / 255.0f)
+                            blue:((float) b / 255.0f)
+                           alpha:1.0f];
+}
+
 @end
 
 /** @name Utility Functions */
@@ -337,3 +397,5 @@ CGFloat angleBetweenThreePoints(CGPoint centerPoint, CGPoint p1, CGPoint p2) {
 	
 	return angle;
 }
+
+

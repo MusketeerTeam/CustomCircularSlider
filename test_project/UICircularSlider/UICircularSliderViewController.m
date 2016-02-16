@@ -11,6 +11,7 @@
 
 #import "UICircularSliderViewController.h"
 #import "UICircularSlider.h"
+#import "PaintThreeColorGradient.h"
 
 @interface UICircularSliderViewController ()
 
@@ -34,8 +35,10 @@
     self.circularSlider.minimumValue = self.slider.minimumValue;
     self.circularSlider.maximumValue = self.slider.maximumValue;
     self.circularSlider.continuous   = NO;
-    self.circularSlider.customAngle  = 2*M_PI;
-//    self.circularSlider.stepping = 1;
+    self.circularSlider.customAngle  = 2 * M_PI;
+
+    //定义步长值
+//    self.circularSlider.stepping = 5;
 
 }
 
